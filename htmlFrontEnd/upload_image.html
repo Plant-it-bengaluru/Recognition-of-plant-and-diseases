@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<title>Plant Species Detection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='https://fonts.googleapis.com/css?family=Cinzel Decorative' rel='stylesheet'>
+
+<head>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background-image: url('./images.jpg');
+      background-repeat: no-repeat;
+      ;
+    }
+
+    h1 {
+      color: black;
+      font-family: 'Cinzel Decorative';
+      text-align: center;
+      font-size: 50px;
+      padding-top: 40px;
+    }
+
+    form {
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 20px;
+      width: 1200px;
+      align-self: center;
+      border-radius: 25px;
+      margin: 0 auto;
+      margin-top: 100px;
+    }
+
+    button {
+      background-color: black;
+      font-family: 'Cinzel Decorative';
+      font-weight: bold;
+      border: none;
+      color: rgb(233, 248, 249);
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 0 auto;
+      border-radius: 25px;
+      cursor: pointer;
+      -webkit-transition-duration: 0.4s;
+      /* Safari */
+      transition-duration: 0.4s;
+    }
+
+    input {
+      background-color: black;
+      font-family: 'Cinzel Decorative';
+      font-weight: bold;
+      border: none;
+      color: rgb(233, 248, 249);
+      padding: 10px 20px; 
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 0 auto;
+      /*margin-right: 30px;
+      margin-left: 50px; */
+      border-radius: 25px;
+      cursor: pointer;
+      -webkit-transition-duration: 0.4s;
+      /* Safari */
+      transition-duration: 0.4s;
+    }
+
+    label {
+      font-family: 'Cinzel Decorative';
+      font-size: 18px;
+      color: black;
+
+    }
+    button:hover {
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    input:hover {
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .form-row {
+      display: flex;
+    }
+
+    .leftBall{
+      flex:1
+    }
+    .rightBall{
+      flex-basis: 30%;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Plant species and disease detection</br> using VGG16 model</h1>
+  <form id="form">
+    <div class="form-row">
+      <div class="leftBall" style="width: 800px;">
+        <label>Got a plant with a mystery leaf? Snap a pic and let us do the rest. Upload your photo to identify the species like a pro</label>
+      </div>
+      <div class="rightBall" style = "width: 30%; align-self: center;">
+        <input type="file" id="file1" style="display: none;" />
+        <input type="button" value="Browse..."
+          onclick="document.getElementById('file1').click();" />
+        <button type="submit">Upload file</button><br>
+      </div>
+    </div>
+  </form>
+  <script type="text/javascript">
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const uploadElement = document.getElementById('file1');
+      const file = uploadElement.files[0];
+      const myForm = new FormData();
+      myForm.append('image', file);
+      console.log(file)
+
+      fetch('http://172.16.5.221:8080/upload-image', {
+        mode: 'cors',
+        method: "POST",
+        body: myForm,
+      }) //api for the get request
+        .then(response => response.json())
+        .then(data => {console.log(data);var input = document.createElement("input");
+        input.type = "text";
+        input.className = "result"
+        input.value=data.Species;
+        document.getElementById('form').append(input)});
+
+
+    });
+  </script>
+</body>
+
+</html>

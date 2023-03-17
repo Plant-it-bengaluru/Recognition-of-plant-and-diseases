@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<title>CNN model</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+  <style>
+    html{
+      height: 100%;
+    }
+    body {
+      background-image: url('./images.jpg');
+      background-repeat: no-repeat;
+      ;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="color:white">Plant species and disease detection using CNN model</h1>
+  <form id="form">
+    <input type="file" id="file1"></input>
+    <button type="submit">Upload file</button>
+  </form>
+  <script type="text/javascript">
+  const form=document.getElementById('form');
+  form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const uploadElement=document.getElementById('file1');
+        const file=uploadElement.files[0];
+        const myForm=new FormData();
+        myForm.append('image', file);
+        console.log(file)
+
+        fetch('http://localhost:8080/upload-image', {
+          mode: 'cors',
+          method: "POST",
+          body: myForm,
+        }) //api for the get request
+      .then(response=> response.json()) .then(data=> console.log(data));
+
+
+    });
+  </script>
+</body>
+</html>
