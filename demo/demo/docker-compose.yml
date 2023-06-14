@@ -1,0 +1,33 @@
+version: "3"
+
+volumes:
+  demo_data:
+    driver: local
+
+services:
+  database:
+    container_name: demoDatabase
+    image: bitnami/postgresql
+    ports: 
+      - 6969:5432
+    networks:
+      - demoNetwork
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_DATABASE=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - './demo:/var/lib/postgresql/data'
+
+  backEndService:
+    container_name: demoapplication
+    image: wardemo
+    ports:
+      - 8080:8080
+    networks:
+      - demoNetwork
+
+networks:
+  demoNetwork:
+    driver: bridge
